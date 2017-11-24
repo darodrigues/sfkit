@@ -1,0 +1,202 @@
+@font-face {
+	font-family: Streetfighter;
+	src: url("fonts/ssf4_abuket.ttf");
+}
+
+@font-face {
+	font-family: Handwritten;
+	src: url("fonts/KomikaJam.ttf");
+}
+
+@font-face {
+	font-family: Machine;
+	src: url("fonts/DejaVuLGCSans.ttf");
+}
+
+a#jsondler {
+	display:none;
+}
+
+body {
+	border-width: 20px;
+	border-color: red;
+	border-style: solid;
+}
+
+h1 {
+	font-family: Streetfighter,fantasy;
+	font-variant: small-caps;
+	font-size: 200%;
+	text-align: center;
+	background: -webkit-linear-gradient(#f60, #ff6);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	margin: 0;
+}
+
+h2 {
+	font-family: Streetfighter,fantasy;
+	font-variant: small-caps;
+	font-size: 125%;
+	text-align: center;
+	margin: 0;
+}
+
+h3 {
+	font-variant: small-caps;
+	font-size: 110%;
+	text-align: center;
+	margin: 0;
+}
+
+hr {
+	border-width: 10px;
+	border-color: red;
+	border-style: solid;
+	margin: 5px 0 0 0;
+}
+
+input[type=file]#jsonuler {
+	display: none;
+}
+
+input[type=text],select {
+	padding: 2px 0px;
+	margin: 0;
+	box-sizing: border-box;
+	border: none;
+	border-bottom: 2px solid;
+	font-family: Handwritten,cursive;
+	font-variant: small-caps;
+	font-size: 80%;
+}
+
+label {
+	display: block;
+}
+
+p {
+	margin: 0;
+}
+
+textarea {
+	width: 95%;
+	height: 110px;
+	border: none;
+	padding: 5px;
+	overflow:hidden;
+	font-family: Handwritten,cursive;
+	font-variant: small-caps;
+	font-size: 80%;
+}
+
+#combos {
+	height: 105px;
+}
+
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.column {
+	float: left;
+	width: 33.33%;
+}
+
+@media (max-width: 700px) {
+    .column {
+        width: 100%;
+    }
+}
+
+.hrl {
+	float: left;
+	width: 30%;
+	border-width:10px;
+}
+
+.hrr {
+	float: right;
+	width: 30%;
+	border-width:10px;
+}
+
+.section {
+	float:left;
+	width:40%;
+	text-align: center;
+}
+
+.label {
+	font-family: Machine,sans-serif;
+	font-size: 80%;
+	padding: 0 0 0 5px;
+}
+
+.value {
+	overflow: hidden;
+	display: block;
+	padding: 0 4px 0 10px
+}
+
+.value input,p {
+	width: 100%
+}
+
+.lineOf8 {
+	height:20px;
+}
+
+.outOf8 {
+	float: right;
+	padding-right: 5px;
+	font-family: Machine,sans-serif;
+	font-size: 80%;
+}
+
+.tendots,.twentydots {
+	text-align: center;
+	font-family: Machine,sans-serif;
+	font-size: 100%;
+}
+
+.tenboxes,.twentyboxes {
+	text-align: center;
+	font-family: Machine,sans-serif;
+	font-size: 93%;
+}
+
+.field {
+	padding: 0 4px 0 10px;
+}
+
+.field input[type=text] {
+	width: 95px;
+	padding: 0 5px;
+}
+
+.maneuverslist {
+	margin: auto;
+	table-layout: fixed;
+}
+
+.maneuverslist input[type=text] {
+	padding: 0 5px;
+	width: 100%;
+}
+
+.number {
+	width: 50px;
+}
+
+.floater {
+	float: left;
+}
+
+@media print {
+	.controls {
+		display:none !important;
+	}
+}

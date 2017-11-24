@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+  <head>
+    <meta charset='UTF-8'>
+    <link title='Standard Scheme' rel='stylesheet' type='text/css' href='display.css' media='screen'>
+    <link title='Print Scheme' rel='stylesheet' type='text/css' href='print.css' media='print'>
+    <script src='sfkit.js'></script>
+    <title>Street Fighter Character Sheet</title>
+  </head>
+
+  <body> <!--onload='setupListeners()'-->
+    <div class='controls'>
+    <a id='jsondler'></a>
+    <input type='file' id='jsonuler' accept='application/json'></input>
+    <div class='row'>
+      <fieldset class='floater'>
+        <legend>Character</legend>
+        <button type='button' id='loadButton' onclick='sfkit_loadJSON()'>Load</button>
+        <button type='button' id='saveButton' onclick='sfkit_saveJSON()'>Save</button>
+      </fieldset>
+      <fieldset class='floater'>
+        <legend>Abilities</legend>
+        <button type='button' id='addAbilitiesButton' onclick='sfkit_addAbilities()'>+</button>
+        <button type='button' id='removeAbilitiesButton' onclick='sfkit_removeAbilities()'>-</button>
+      </fieldset>
+      <fieldset class='floater'>
+        <legend>Advantages</legend>
+        <button type='button' id='addAdvantagesButton' onclick='sfkit_addAdvantages()'>+</button>
+        <button type='button' id='removeAdvantagesButton' onclick='sfkit_removeAdvantages()'>-</button>
+      </fieldset>
+      <fieldset class='floater'>
+        <legend>Special Maneuvers</legend>
+        <button type='button' id='addSpecialManeuversButton' onclick='sfkit_addSpecialManeuvers()'>+</button>
+        <button type='button' id='removeSpecialManeuversButton' onclick='sfkit_removeSpecialManeuvers()'>-</button>
+      </fieldset>
+    </div>
+    <hr>
+    </div>
+    <h1>Street Fighter</h1>
+    <div class='row'>
+      <div class='column'>
+        <div><label for='name' class='floater label'>Name:</label><span class='value'><input type='text' class='textField' id='name' name='name' onblur='sfkit_updateField("name")'></input></span></div>
+        <div><label for='player' class='floater label'>Player:</label><span class='value'><input type='text' class='textField' id='player' name='player' onblur='sfkit_updateField("player")'></input></span></div>
+        <div><label for='campaign' class='floater label'>Campaign:</label><span class='value'><input type='text' class='textField' id='campaign' name='campaign' onblur='sfkit_updateField("campaign")'></input></span></div>
+      </div>
+      <div class='column'>
+        <div><label for='style' class='floater label'>Style:</label><span class='value'><input type='text' class='textField' id='style' name='style' onblur='sfkit_updateField("style")'></input></span></div>
+        <div><label for='school' class='floater label'>School:</label><span class='value'><input type='text' class='textField' id='school' name='school' onblur='sfkit_updateField("school")'></input></span></div>
+        <div><label for='stable' class='floater label'>Stable:</label><span class='value'><input type='text' class='textField' id='stable' name='stable' onblur='sfkit_updateField("stable")'></input></span></div>
+      </div>
+      <div class='column'>
+        <div><label for='team' class='floater label'>Team:</label><span class='value'><input type='text' class='textField' id='team' name='team' onblur='sfkit_updateField("team")'></input></span></div>
+        <div><label for='concept' class='floater label'>Concept:</label><span class='value'><input type='text' class='textField' id='concept' name='concept' onblur='sfkit_updateField("concept")'></input></span></div>
+        <div><label for='signature' class='floater label'>Signature:</label><span class='value'><input type='text' class='textField' id='signature' name='signature' onblur='sfkit_updateField("signature")'></input></span></div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='hrl'><hr></div>
+      <div class='section'><h2>Attributes</h2></div>
+      <div class='hrr'><hr></div>
+    </div>
+    <div class='row'>
+      <div class='column'>
+      <h3>Physical</h3>
+      <div class='row lineOf8'><span class='label'>Strength</span><span id='strength' class='outOf8 setOf8' onclick='sfkit_updateFixed8("strength")'>●○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Dexterity</span><span id='dexterity' class='outOf8 setOf8' onclick='sfkit_updateFixed8("dexterity")'>●○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Stamina</span><span id='stamina' class='outOf8 setOf8' onclick='sfkit_updateFixed8("stamina")'>●○○○○ ○○○</span></div>
+      </div>
+      <div class='column'>
+      <h3>Social</h3>
+      <div class='row lineOf8'><span class='label'>Manipulation</span><span id='manipulation' class='outOf8 setOf8' onclick='sfkit_updateFixed8("manipulation")'>●○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Charisma</span><span id='charisma' class='outOf8 setOf8' onclick='sfkit_updateFixed8("charisma")'>●○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Appearance</span><span id='appearance' class='outOf8 setOf8' onclick='sfkit_updateFixed8("appearance")'>●○○○○ ○○○</span></div>
+      </div>
+      <div class='column'>
+      <h3>Mental</h3>
+      <div class='row lineOf8'><span class='label'>Perception</span><span id='perception' class='outOf8 setOf8' onclick='sfkit_updateFixed8("perception")'>●○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Intelligence</span><span id='intelligence' class='outOf8 setOf8' onclick='sfkit_updateFixed8("intelligence")'>●○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Wits</span><span id='wits' class='outOf8 setOf8' onclick='sfkit_updateFixed8("wits")'>●○○○○ ○○○</span></div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='hrl'><hr></div>
+      <div class='section'><h2>Abilities</h2></div>
+      <div class='hrr'><hr></div>
+    </div>
+    <div class='row'>
+      <div id='tal' class='column custom8'>
+      <h3>Talents</h3>
+      <div class='row lineOf8'><span class='label'>Alertness</span><span id='alertness' class='outOf8 setOf8' onclick='sfkit_updateFixed8("alertness")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Insight</span><span id='insight' class='outOf8 setOf8' onclick='sfkit_updateFixed8("insight")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Instruction</span><span id='instruction' class='outOf8 setOf8' onclick='sfkit_updateFixed8("instruction")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Interrogation</span><span id='interrogation' class='outOf8 setOf8' onclick='sfkit_updateFixed8("interrogation")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Intimidation</span><span id='intimidation' class='outOf8 setOf8' onclick='sfkit_updateFixed8("intimidation")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Manage</span><span id='manage' class='outOf8 setOf8' onclick='sfkit_updateFixed8("manage")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Search</span><span id='search' class='outOf8 setOf8' onclick='sfkit_updateFixed8("search")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Streetwise</span><span id='streetwise' class='outOf8 setOf8' onclick='sfkit_updateFixed8("streetwise")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Subterfuge</span><span id='subterfuge' class='outOf8 setOf8' onclick='sfkit_updateFixed8("subterfuge")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='field'><input type='text' id='tallabel0' onblur='sfkit_updateCustomLabel("tal",0)'></input></span><span id='talval0' class='outOf8' onclick='sfkit_updateCustom8("tal",0)'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='field'><input type='text' id='tallabel1' onblur='sfkit_updateCustomLabel("tal",1)'></input></span><span id='talval1' class='outOf8' onclick='sfkit_updateCustom8("tal",1)'>○○○○○ ○○○</span></div>
+      </div>
+      <div id='skl' class='column custom8'>
+      <h3>Skills</h3>
+      <div class='row lineOf8'><span class='label'>Blind Fighting</span><span id='blindFighting' class='outOf8 setOf8' onclick='sfkit_updateFixed8("blindFighting")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Bookie</span><span id='bookie' class='outOf8 setOf8' onclick='sfkit_updateFixed8("bookie")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Demolitions</span><span id='demolitions' class='outOf8 setOf8' onclick='sfkit_updateFixed8("demolitions")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Disguise</span><span id='disguise' class='outOf8 setOf8' onclick='sfkit_updateFixed8("disguise")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Drive</span><span id='drive' class='outOf8 setOf8' onclick='sfkit_updateFixed8("drive")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Leadership</span><span id='leadership' class='outOf8 setOf8' onclick='sfkit_updateFixed8("leadership")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Publicist</span><span id='publicist' class='outOf8 setOf8' onclick='sfkit_updateFixed8("publicist")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Repair</span><span id='repair' class='outOf8 setOf8' onclick='sfkit_updateFixed8("repair")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Security</span><span id='security' class='outOf8 setOf8' onclick='sfkit_updateFixed8("security")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Stealth</span><span id='stealth' class='outOf8 setOf8' onclick='sfkit_updateFixed8("stealth")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Survival</span><span id='survival' class='outOf8 setOf8' onclick='sfkit_updateFixed8("survival")'>○○○○○ ○○○</span></div>
+      </div>
+      <div id='knwl' class='column custom8'>
+      <h3>Knowledges</h3>
+      <div class='row lineOf8'><span class='label'>Arena</span><span id='arena' class='outOf8 setOf8' onclick='sfkit_updateFixed8("arena")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Computer</span><span id='computer' class='outOf8 setOf8' onclick='sfkit_updateFixed8("computer")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Cybernetics</span><span id='cybernetics' class='outOf8 setOf8' onclick='sfkit_updateFixed8("cybernetics")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Finance</span><span id='finance' class='outOf8 setOf8' onclick='sfkit_updateFixed8("finance")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Investigation</span><span id='investigation' class='outOf8 setOf8' onclick='sfkit_updateFixed8("investigation")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Law</span><span id='law' class='outOf8 setOf8' onclick='sfkit_updateFixed8("law")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Language</span><span id='language' class='outOf8 setOf8' onclick='sfkit_updateFixed8("language")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Medicine</span><span id='medicine' class='outOf8 setOf8' onclick='sfkit_updateFixed8("medicine")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Mysteries</span><span id='mysteries' class='outOf8 setOf8' onclick='sfkit_updateFixed8("mysteries")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Science</span><span id='science' class='outOf8 setOf8' onclick='sfkit_updateFixed8("science")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Style Lore</span><span id='styleLore' class='outOf8 setOf8' onclick='sfkit_updateFixed8("styleLore")'>○○○○○ ○○○</span></div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='hrl'><hr></div>
+      <div class='section'><h2>Advantages</h2></div>
+      <div class='hrr'><hr></div>
+    </div>
+    <div class='row'>
+      <div id='bkg' class='column custom8'>
+      <h3>Backgrounds</h3>
+      <div class='row lineOf8'><span class='field'><input type='text' id='bkglabel0' onblur='sfkit_updateCustomLabel("bkg",0)'></input></span><span id='bkgval0' class='outOf8' onclick='sfkit_updateCustom8("bkg",0)'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='field'><input type='text' id='bkglabel1' onblur='sfkit_updateCustomLabel("bkg",1)'></input></span><span id='bkgval1' class='outOf8' onclick='sfkit_updateCustom8("bkg",1)'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='field'><input type='text' id='bkglabel2' onblur='sfkit_updateCustomLabel("bkg",2)'></input></span><span id='bkgval2' class='outOf8' onclick='sfkit_updateCustom8("bkg",2)'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='field'><input type='text' id='bkglabel3' onblur='sfkit_updateCustomLabel("bkg",3)'></input></span><span id='bkgval3' class='outOf8' onclick='sfkit_updateCustom8("bkg",3)'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='field'><input type='text' id='bkglabel4' onblur='sfkit_updateCustomLabel("bkg",4)'></input></span><span id='bkgval4' class='outOf8' onclick='sfkit_updateCustom8("bkg",4)'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='field'><input type='text' id='bkglabel5' onblur='sfkit_updateCustomLabel("bkg",5)'></input></span><span id='bkgval5' class='outOf8' onclick='sfkit_updateCustom8("bkg",5)'>○○○○○ ○○○</span></div>
+      </div>
+      <div id='tech' class='column custom8'>
+      <h3>Techniques</h3>
+      <div class='row lineOf8'><span class='label'>Punch</span><span id='punch' class='outOf8 setOf8' onclick='sfkit_updateFixed8("punch")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Kick</span><span id='kick' class='outOf8 setOf8' onclick='sfkit_updateFixed8("kick")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Block</span><span id='block' class='outOf8 setOf8' onclick='sfkit_updateFixed8("block")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Grab</span><span id='grab' class='outOf8 setOf8' onclick='sfkit_updateFixed8("grab")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Athletics</span><span id='athletics' class='outOf8 setOf8' onclick='sfkit_updateFixed8("athletics")'>○○○○○ ○○○</span></div>
+      <div class='row lineOf8'><span class='label'>Focus</span><span id='focus' class='outOf8 setOf8' onclick='sfkit_updateFixed8("focus")'>○○○○○ ○○○</span></div>
+      </div>
+      <div class='column'>
+      <h3>Combos</h3>
+      <div>
+      <textarea class='textField' id='combos' name='combos' placeholder='none' onblur='sfkit_updateField("combos")'></textarea>
+      </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='hrl'><hr></div>
+      <div class='section'><h2>Expendables</h2></div>
+      <div class='hrr'><hr></div>
+    </div>
+    <div class='row'>
+      <div class='column'>
+      <br>
+      <h3 class='setOf10' id='glory'>Glory</h3>
+      <div id='glory_permanent' class='tendots' onclick='sfkit_updateTenDots("glory_permanent")'>○○○○○ ○○○○○</div>
+      <div id='glory_temporary' class='tenboxes' onclick='sfkit_updateTenBoxes("glory_temporary")'>□□□□□ □□□□□</div>
+      <h3 class='setOf10' id='honor'>Honor</h3>
+      <div id='honor_permanent' class='tendots' onclick='sfkit_updateTenDots("honor_permanent")'>○○○○○ ○○○○○</div>
+      <div id='honor_temporary' class='tenboxes' onclick='sfkit_updateTenBoxes("honor_temporary")'>□□□□□ □□□□□</div>
+      <h3>Experience</h3>
+      <span class='value'><input type='text' class='textField' id='experience' name='experience'></span>
+      </div>
+      <div class='column'>
+      <h3 class='setOf10' id='chi'>Chi</h3>
+      <div id='chi_permanent' class='tendots' onclick='sfkit_updateTenDots("chi_permanent")'>○○○○○ ○○○○○</div>
+      <div id='chi_temporary' class='tenboxes' onclick='sfkit_updateTenBoxes("chi_temporary")'>□□□□□ □□□□□</div>
+      <h3 class='setOf10' id='willpower'>Willpower</h3>
+      <div id='willpower_permanent' class='tendots' onclick='sfkit_updateTenDots("willpower_permanent")'>○○○○○ ○○○○○</div>
+      <div id='willpower_temporary' class='tenboxes' onclick='sfkit_updateTenBoxes("willpower_temporary")'>□□□□□ □□□□□</div>
+      <h3 class='setOf20' id='health'>Health</h3>
+      <div id='health_permanentUpper' class='twentydots' onclick='sfkit_updateTwentyDots("health_permanent")'>●●●●● ●●●●●</div>
+      <div id='health_temporaryUpper' class='twentyboxes' onclick='sfkit_updateTwentyBoxes("health_temporary")'>□□□□□ □□□□□</div>
+      <div id='health_permanentLower' class='twentydots' onclick='sfkit_updateTwentyDots("health_permanent")'>○○○○○ ○○○○○</div>
+      <div id='health_temporaryLower' class='twentyboxes' onclick='sfkit_updateTwentyBoxes("health_temporary")'>□□□□□ □□□□□</div>
+      </div>
+      <div class='column'>
+        <br>
+        <div><label for='division' class='label'>Division:</label><span class='value'><input type='text' class='textField' id='division' name='division' onblur='sfkit_updateField("division")'></input></span></div>
+	<div><label for='divisionRank' class='label'>Rank:</label><span class='value'><input type='text' class='textField' id='divisionRank' name='divisionRank' onblur='sfkit_updateField("divisionRank")'></input></span></div>
+	<div><label for='divisionWins' class='label'>Wins:</label><span class='value'><input type='text' class='textField' id='divisionWins' name='divisionWins' onblur='sfkit_updateField("divisionWins")'></input></span></div>
+	<div><label for='divisionLosses' class='label'>Losses:</label><span class='value'><input type='text' class='textField' id='divisionLosses' name='divisionLosses' onblur='sfkit_updateField("divisionLosses")'></input></span></div>
+	<div><label for='divisionDraws' class='label'>Draws:</label><span class='value'><input type='text' class='textField' id='divisionDraws' name='divisionDraws' onblur='sfkit_updateField("divisionDraws")'></input></span></div>
+	<div><label for='divisionKOs' class='label'>K.O.s:</label><span class='value'><input type='text' class='textField' id='divisionKOs' name='divisionKOs' onblur='sfkit_updateField("divisionKOs")'></input></span></div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='hrl'><hr></div>
+      <div class='section'><h2>Special Maneuvers</h2></div>
+      <div class='hrr'><hr></div>
+    </div>
+    <div>
+      <table id='maneuvers' class='maneuverslist'>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Speed</th>
+            <th>Damage</th>
+            <th>Move</th>
+            <th>Cost</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class='stdman' id='jab'>
+            <td>Jab</td>
+            <td class='number'><input type='text' id='jab_spd' title='Jab Speed (dex+2)' onblur='sfkit_updateField("jab_spd")'></input></td>
+            <td class='number'><input type='text' id='jab_dmg' title='Jab Damage (str+punch-1)' onblur='sfkit_updateField("jab_dmg")'></input></td>
+            <td class='number'><input type='text' id='jab_mov' title='Jab Move (athletics+0)' onblur='sfkit_updateField("jab_mov")'></input></td>
+            <td class='number'><input type='text' id='jab_cost' title='Jab Cost (none)' onblur='sfkit_updateField("jab_cost")'></input></td>
+            <td><input type='text' id='jab_obs' title='Jab Notes (none)' onblur='sfkit_updateField("jab_obs")'></input></td>
+          </tr>
+          <tr class='stdman' id='strong'>
+            <td>Strong Punch</td>
+            <td class='number'><input type='text' id='strong_spd' title='Strong Punch Speed (dex+0)' onblur='sfkit_updateField("strong_spd")'></input></td>
+            <td class='number'><input type='text' id='strong_dmg' title='Strong Punch Damage (str+punch+1)' onblur='sfkit_updateField("strong_dmg")'></input></td>
+            <td class='number'><input type='text' id='strong_mov' title='Strong Punch Move (athletics+0)' onblur='sfkit_updateField("strong_mov")'></input></td>
+            <td class='number'><input type='text' id='strong_cost' title='Strong Punch Cost (none)' onblur='sfkit_updateField("strong_cost")'></input></td>
+            <td><input type='text' id='strong_obs' title='Strong Punch Notes (none)' onblur='sfkit_updateField("strong_obs")'></input></td>
+          </tr>
+          <tr class='stdman' id='fierce'>
+            <td>Fierce Punch</td>
+            <td class='number'><input type='text' id='fierce_spd' title='Fierce Punch Speed (dex-1)' onblur='sfkit_updateField("fierce_spd")'></input></td>
+            <td class='number'><input type='text' id='fierce_dmg' title='Fierce Punch Damage (str+punch+3)' onblur='sfkit_updateField("fierce_dmg")'></input></td>
+            <td class='number'><input type='text' id='fierce_mov' title='Fierce Punch Move (athletics-1)' onblur='sfkit_updateField("fierce_mov")'></input></td>
+            <td class='number'><input type='text' id='fierce_cost' title='Fierce Punch Cost (none)' onblur='sfkit_updateField("fierce_cost")'></input></td>
+            <td><input type='text' id='fierce_obs' title='Fierce Punch Notes (none)' onblur='sfkit_updateField("fierce_obs")'></input></td>
+          </tr>
+          <tr class='stdman' id='short'>
+            <td>Short Kick</td>
+            <td class='number'><input type='text' id='short_spd' title='Short Kick Speed (dex+1)' onblur='sfkit_updateField("short_spd")'></input></td>
+            <td class='number'><input type='text' id='short_dmg' title='Short Kick Damage (str+kick+0)' onblur='sfkit_updateField("short_dmg")'></input></td>
+            <td class='number'><input type='text' id='short_mov' title='Short Kick Move (athletics+0)' onblur='sfkit_updateField("short_mov")'></input></td>
+            <td class='number'><input type='text' id='short_cost' title='Short Kick Cost (none)' onblur='sfkit_updateField("short_cost")'></input></td>
+            <td><input type='text' id='short_obs' title='Short Kick Notes (none)' onblur='sfkit_updateField("short_obs")'></input></td>
+          </tr>
+          <tr class='stdman' id='forward'>
+            <td>Forward Kick</td>
+            <td class='number'><input type='text' id='forward_spd' title='Forward Kick Speed (dex+0)' onblur='sfkit_updateField("forward_spd")'></input></td>
+            <td class='number'><input type='text' id='forward_dmg' title='Forward Kick Damage (str+kick+2)' onblur='sfkit_updateField("forward_dmg")'></input></td>
+            <td class='number'><input type='text' id='forward_mov' title='Forward Kick Move (athletics-1)' onblur='sfkit_updateField("forward_mov")'></input></td>
+            <td class='number'><input type='text' id='forward_cost' title='Forward Kick Cost (none)' onblur='sfkit_updateField("forward_cost")'></input></td>
+            <td><input type='text' id='forward_obs' title='Forward Kick Notes (none)' onblur='sfkit_updateField("forward_obs")'></input></td>
+          </tr>
+          <tr class='stdman' id='roundhouse'>
+            <td>Roundhouse Kick</td>
+            <td class='number'><input type='text' id='roundhouse_spd' title='Roundhouse Kick Speed (dex-2)' onblur='sfkit_updateField("roundhouse_spd")'></input></td>
+            <td class='number'><input type='text' id='roundhouse_dmg' title='Roundhouse Kick Damage (str+kick+4)' onblur='sfkit_updateField("roundhouse_dmg")'></input></td>
+            <td class='number'><input type='text' id='roundhouse_mov' title='Roundhouse Kick Move (athletics-1)' onblur='sfkit_updateField("roundhouse_mov")'></input></td>
+            <td class='number'><input type='text' id='roundhouse_cost' title='Roundhouse Kick Cost (none)' onblur='sfkit_updateField("roundhouse_cost")'></input></td>
+            <td><input type='text' id='roundhouse_obs' title='Roundhouse Kick Notes (none)' onblur='sfkit_updateField("roundhouse_obs")'></input></td>
+          </tr>
+          <tr class='stdman' id='block'>
+            <td>Block</td>
+            <td class='number'><input type='text' id='block_spd' title='Block Speed (dex+4)' onblur='sfkit_updateField("block_spd")'></input></td>
+            <td class='number'><input type='text' id='block_dmg' title='Block Damage (zero)' onblur='sfkit_updateField("block_dmg")'></input></td>
+            <td class='number'><input type='text' id='block_mov' title='Block Move (zero)' onblur='sfkit_updateField("block_mov")'></input></td>
+            <td class='number'><input type='text' id='block_cost' title='Block Cost (none)' onblur='sfkit_updateField("block_cost")'></input></td>
+            <td><input type='text' id='block_obs' title='Block Notes (sta+block soak, +2spd next turn, abort)' onblur='sfkit_updateField("block_obs")'></input></td>
+          </tr>
+          <tr class='stdman' id='move'>
+            <td>Move</td>
+            <td class='number'><input type='text' id='move_spd' title='Move Speed (dex+3)' onblur='sfkit_updateField("move_spd")'></input></td>
+            <td class='number'><input type='text' id='move_dmg' title='Move Damage (zero)' onblur='sfkit_updateField("move_dmg")'></input></td>
+            <td class='number'><input type='text' id='move_mov' title='Move Move (athletics+3)' onblur='sfkit_updateField("move_mov")'></input></td>
+            <td class='number'><input type='text' id='move_cost' title='Move Cost (none)' onblur='sfkit_updateField("move_cost")'></input></td>
+            <td><input type='text' id='move_obs' title='Move Notes (none)' onblur='sfkit_updateField("move_obs")'></input></td>
+          </tr>
+          <tr class='stdman' id='grab'>
+            <td>Grab</td>
+            <td class='number'><input type='text' id='grab_spd' title='Grab Speed (dex+0)' onblur='sfkit_updateField("grab_spd")'></input></td>
+            <td class='number'><input type='text' id='grab_dmg' title='Grab Damage (str+grab+0)' onblur='sfkit_updateField("grab_dmg")'></input></td>
+            <td class='number'><input type='text' id='grab_mov' title='Grab Move (one)' onblur='sfkit_updateField("grab_mov")'></input></td>
+            <td class='number'><input type='text' id='grab_cost' title='Grab Cost (none)' onblur='sfkit_updateField("grab_cost")'></input></td>
+            <td><input type='text' id='grab_obs' title='Grab Notes (Sustained)' onblur='sfkit_updateField("grab_obs")'></input></td>
+          </tr>
+          <tr>
+            <td><input type='text' id='specman0_name' title='Name' onblur='sfkit_updateManeuver("specman",0,"name")'></input></td>
+            <td class='number'><input type='text' id='specman0_spd' title='Speed (dex+mod)' onblur='sfkit_updateManeuver("specman",0,"spd")'></input></td>
+            <td class='number'><input type='text' id='specman0_dmg' title='Damage (str+technique+mod)' onblur='sfkit_updateManeuver("specman",0,"dmg")'></input></td>
+            <td class='number'><input type='text' id='specman0_mov' title='Move (athletics+mod)' onblur='sfkit_updateManeuver("specman",0,"mov")'></input></td>
+            <td class='number'><input type='text' id='specman0_cost' title='Cost' onblur='sfkit_updateManeuver("specman",0,"cost")'></input></td>
+            <td><input type='text' id='specman0_obs' title='Notes' onblur='sfkit_updateManeuver("specman",0,"obs")'></input></td>
+          </tr>
+          <tr>
+            <td><input type='text' id='specman1_name' title='Name' onblur='sfkit_updateManeuver("specman",1,"name")'></input></td>
+            <td class='number'><input type='text' id='specman1_spd' title='Speed (dex+mod)' onblur='sfkit_updateManeuver("specman",1,"spd")'></input></td>
+            <td class='number'><input type='text' id='specman1_dmg' title='Damage (str+technique+mod)' onblur='sfkit_updateManeuver("specman",1,"dmg")'></input></td>
+            <td class='number'><input type='text' id='specman1_mov' title='Move (athletics+mod)' onblur='sfkit_updateManeuver("specman",1,"mov")'></input></td>
+            <td class='number'><input type='text' id='specman1_cost' title='Cost' onblur='sfkit_updateManeuver("specman",1,"cost")'></input></td>
+            <td><input type='text' id='specman1_obs' title='Notes' onblur='sfkit_updateManeuver("specman",1,"obs")'></input></td>
+          </tr>
+          <tr>
+            <td><input type='text' id='specman2_name' title='Name' onblur='sfkit_updateManeuver("specman",2,"name")'></input></td>
+            <td class='number'><input type='text' id='specman2_spd' title='Speed (dex+mod)' onblur='sfkit_updateManeuver("specman",2,"spd")'></input></td>
+            <td class='number'><input type='text' id='specman2_dmg' title='Damage (str+technique+mod)' onblur='sfkit_updateManeuver("specman",2,"dmg")'></input></td>
+            <td class='number'><input type='text' id='specman2_mov' title='Move (athletics+mod)' onblur='sfkit_updateManeuver("specman",2,"mov")'></input></td>
+            <td class='number'><input type='text' id='specman2_cost' title='Cost' onblur='sfkit_updateManeuver("specman",2,"cost")'></input></td>
+            <td><input type='text' id='specman2_obs' title='Notes' onblur='sfkit_updateManeuver("specman",2,"obs")'></input></td>
+          </tr>
+          <tr>
+            <td><input type='text' id='specman3_name' title='Name' onblur='sfkit_updateManeuver("specman",3,"name")'></input></td>
+            <td class='number'><input type='text' id='specman3_spd' title='Speed (dex+mod)' onblur='sfkit_updateManeuver("specman",3,"spd")'></input></td>
+            <td class='number'><input type='text' id='specman3_dmg' title='Damage (str+technique+mod)' onblur='sfkit_updateManeuver("specman",3,"dmg")'></input></td>
+            <td class='number'><input type='text' id='specman3_mov' title='Move (athletics+mod)' onblur='sfkit_updateManeuver("specman",3,"mov")'></input></td>
+            <td class='number'><input type='text' id='specman3_cost' title='Cost' onblur='sfkit_updateManeuver("specman",3,"cost")'></input></td>
+            <td><input type='text' id='specman3_obs' title='Notes' onblur='sfkit_updateManeuver("specman",3,"obs")'></input></td>
+          </tr>
+          <tr>
+            <td><input type='text' id='specman4_name' title='Name' onblur='sfkit_updateManeuver("specman",4,"name")'></input></td>
+            <td class='number'><input type='text' id='specman4_spd' title='Speed (dex+mod)' onblur='sfkit_updateManeuver("specman",4,"spd")'></input></td>
+            <td class='number'><input type='text' id='specman4_dmg' title='Damage (str+technique+mod)' onblur='sfkit_updateManeuver("specman",4,"dmg")'></input></td>
+            <td class='number'><input type='text' id='specman4_mov' title='Move (athletics+mod)' onblur='sfkit_updateManeuver("specman",4,"mov")'></input></td>
+            <td class='number'><input type='text' id='specman4_cost' title='Cost' onblur='sfkit_updateManeuver("specman",4,"cost")'></input></td>
+            <td><input type='text' id='specman4_obs' title='Notes' onblur='sfkit_updateManeuver("specman",4,"obs")'></input></td>
+          </tr>
+          <tr>
+            <td><input type='text' id='specman5_name' title='Name' onblur='sfkit_updateManeuver("specman",5,"name")'></input></td>
+            <td class='number'><input type='text' id='specman5_spd' title='Speed (dex+mod)' onblur='sfkit_updateManeuver("specman",5,"spd")'></input></td>
+            <td class='number'><input type='text' id='specman5_dmg' title='Damage (str+technique+mod)' onblur='sfkit_updateManeuver("specman",5,"dmg")'></input></td>
+            <td class='number'><input type='text' id='specman5_mov' title='Move (athletics+mod)' onblur='sfkit_updateManeuver("specman",5,"mov")'></input></td>
+            <td class='number'><input type='text' id='specman5_cost' title='Cost' onblur='sfkit_updateManeuver("specman",5,"cost")'></input></td>
+            <td><input type='text' id='specman5_obs' title='Notes' onblur='sfkit_updateManeuver("specman",5,"obs")'></input></td>
+          </tr>
+          <tr>
+            <td><input type='text' id='specman6_name' title='Name' onblur='sfkit_updateManeuver("specman",6,"name")'></input></td>
+            <td class='number'><input type='text' id='specman6_spd' title='Speed (dex+mod)' onblur='sfkit_updateManeuver("specman",6,"spd")'></input></td>
+            <td class='number'><input type='text' id='specman6_dmg' title='Damage (str+technique+mod)' onblur='sfkit_updateManeuver("specman",6,"dmg")'></input></td>
+            <td class='number'><input type='text' id='specman6_mov' title='Move (athletics+mod)' onblur='sfkit_updateManeuver("specman",6,"mov")'></input></td>
+            <td class='number'><input type='text' id='specman6_cost' title='Cost' onblur='sfkit_updateManeuver("specman",6,"cost")'></input></td>
+            <td><input type='text' id='specman6_obs' title='Notes' onblur='sfkit_updateManeuver("specman",6,"obs")'></input></td>
+          </tr>
+          <tr>
+            <td><input type='text' id='specman7_name' title='Name' onblur='sfkit_updateManeuver("specman",7,"name")'></input></td>
+            <td class='number'><input type='text' id='specman7_spd' title='Speed (dex+mod)' onblur='sfkit_updateManeuver("specman",7,"spd")'></input></td>
+            <td class='number'><input type='text' id='specman7_dmg' title='Damage (str+technique+mod)' onblur='sfkit_updateManeuver("specman",7,"dmg")'></input></td>
+            <td class='number'><input type='text' id='specman7_mov' title='Move (athletics+mod)' onblur='sfkit_updateManeuver("specman",7,"mov")'></input></td>
+            <td class='number'><input type='text' id='specman7_cost' title='Cost' onblur='sfkit_updateManeuver("specman",7,"cost")'></input></td>
+            <td><input type='text' id='specman7_obs' title='Notes' onblur='sfkit_updateManeuver("specman",7,"obs")'></input></td>
+          </tr>
+          <tr>
+            <td><input type='text' id='specman8_name' title='Name' onblur='sfkit_updateManeuver("specman",8,"name")'></input></td>
+            <td class='number'><input type='text' id='specman8_spd' title='Speed (dex+mod)' onblur='sfkit_updateManeuver("specman",8,"spd")'></input></td>
+            <td class='number'><input type='text' id='specman8_dmg' title='Damage (str+technique+mod)' onblur='sfkit_updateManeuver("specman",8,"dmg")'></input></td>
+            <td class='number'><input type='text' id='specman8_mov' title='Move (athletics+mod)' onblur='sfkit_updateManeuver("specman",8,"mov")'></input></td>
+            <td class='number'><input type='text' id='specman8_cost' title='Cost' onblur='sfkit_updateManeuver("specman",8,"cost")'></input></td>
+            <td><input type='text' id='specman8_obs' title='Notes' onblur='sfkit_updateManeuver("specman",8,"obs")'></input></td>
+          </tr>
+          <tr>
+            <td><input type='text' id='specman9_name' title='Name' onblur='sfkit_updateManeuver("specman",9,"name")'></input></td>
+            <td class='number'><input type='text' id='specman9_spd' title='Speed (dex+mod)' onblur='sfkit_updateManeuver("specman",9,"spd")'></input></td>
+            <td class='number'><input type='text' id='specman9_dmg' title='Damage (str+technique+mod)' onblur='sfkit_updateManeuver("specman",9,"dmg")'></input></td>
+            <td class='number'><input type='text' id='specman9_mov' title='Move (athletics+mod)' onblur='sfkit_updateManeuver("specman",9,"mov")'></input></td>
+            <td class='number'><input type='text' id='specman9_cost' title='Cost' onblur='sfkit_updateManeuver("specman",9,"cost")'></input></td>
+            <td><input type='text' id='specman9_obs' title='Notes' onblur='sfkit_updateManeuver("specman",9,"obs")'></input></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class='row'>
+      <div class='hrl'><hr></div>
+      <div class='section'><h2>Notes</h2></div>
+      <div class='hrr'><hr></div>
+    </div>
+    <textarea class='textField' id='notes' name='notes' placeholder='Miscellaneous notes' onblur='sfkit_updateField("notes")'></textarea>
+  </body>
+</html>
